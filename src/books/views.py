@@ -7,7 +7,6 @@ from .models import Book, Author
 
 
 class BooksAPIView(APIView):
-
     def get(self, request, pk=None):
         if pk:
             book = get_object_or_404(Book, pk=pk)
@@ -35,6 +34,7 @@ class BooksAPIView(APIView):
 
     def delete(self, request, pk):
         book = get_object_or_404(Book, pk=pk)
+        print(request.user)
 
         if book.author != request.user:
             return Response({"detail": "Siz faqat o'z kitoblaringizni o'chira olasiz."},
