@@ -2,9 +2,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
-from .serializers import BookSerializers, AuthorSerializers
-from .models import Book, Author
-
+from .serializers.author import AuthorSerializers
+from .serializers.book import BookSerializers
+from .models.author import Author
+from .models.book import Book
 
 class BooksAPIView(APIView):
     def get(self, request, pk=None):
