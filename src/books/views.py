@@ -1,4 +1,5 @@
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
@@ -53,6 +54,11 @@ class AuthorRetrieveAPIView(APIView):
         return Response(serializer.data)
 
 
+class TokenView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({"message": "Siz token bilan muvaffaqiyatli kirdingiz!"})
 
 
 
