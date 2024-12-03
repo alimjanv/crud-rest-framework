@@ -54,6 +54,11 @@ class AuthorRetrieveAPIView(APIView):
         return Response(serializer.data)
 
 
+class TokenView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({"message": "Siz token bilan muvaffaqiyatli kirdingiz!"})
 
 
 

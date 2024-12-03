@@ -6,8 +6,8 @@ urlpatterns = [
     path('books', BooksAPIView.as_view(), name='booksold-list-create'),
     path('books/<int:pk>', BooksAPIView.as_view(), name='delete-update'),
     path('authors/<int:pk>', AuthorRetrieveAPIView.as_view(), name='author-detail'),
-    path('api/token', TokenObtainPairView.as_view(), name='token'),
-    path('api/token/refresh', TokenView.as_view(), name='token_refresh'),
+    path('token', TokenObtainPairView.as_view(), name='token'),
+    path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
 
 
 
