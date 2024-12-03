@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import BooksAPIView, AuthorRetrieveAPIView, TokenView
+from .views import BooksAPIView, AuthorRetrieveAPIView
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 urlpatterns = [
