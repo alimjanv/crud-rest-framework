@@ -1,16 +1,19 @@
 from django.http import JsonResponse
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
 from .serializers.author import AuthorSerializers
 from .serializers.book import BookSerializers
 from .models.author import Author
 from .models.book import Book
+from .serializers.signup import SignupSerializer
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
 
 
 class BooksAPIView(APIView):
@@ -68,11 +71,30 @@ class AuthorRetrieveAPIView(APIView):
 
 
 
-def author_books(request, author_id):
-    try:
-        author = Author.objects.get(pk=author_id)
-        books = author.books.all()
-        books_data = [{"title": book.title, "subtitle": book.subtitle, "price": book.price} for book in books]
-        return JsonResponse({"author": author.name, "books": books_data})
-    except Author.DoesNotExist:
-        return JsonResponse({"error": "Muallif topilmadi"}, status=404)
+
+class SignUpView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        serializer = SignupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Foydalanuvchi ro'yxatdan o'tdi!"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SigninView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user:
+            # JWT token yaratish
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+                "message": "Tizimga muvaffaqiyatli kirdingiz!"
+            })
+        return Response({"error": "Noto'g'ri username yoki parol"}, status=status.HTTP_401_UNAUTHORIZED)

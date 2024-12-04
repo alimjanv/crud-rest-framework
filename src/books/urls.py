@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import BooksAPIView, AuthorRetrieveAPIView
+from .views import BooksAPIView, AuthorRetrieveAPIView, SigninView, SignUpView
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 urlpatterns = [
@@ -8,10 +8,13 @@ urlpatterns = [
     path('authors/<int:pk>', AuthorRetrieveAPIView.as_view(), name='author-detail'),
     path('token', TokenObtainPairView.as_view(), name='token'),
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
-
-
-
+    path('signup', SignUpView.as_view(), name='signup'),
+    path('signin', SigninView.as_view(), name='signin'),
 ]
+
+
+
+
 
 
 
